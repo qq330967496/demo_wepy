@@ -2,14 +2,14 @@ var prod = process.env.NODE_ENV === 'production'
 
 module.exports = {
   wpyExt: '.wpy',
-  eslint: true,
+  // eslint: true,
   compilers: {
-    less: {
+    /*less: {
       compress: true
-    },
-    /*sass: {
-      outputStyle: 'compressed'
     },*/
+    sass: {
+      outputStyle: 'compressed'
+    },
     babel: {
       sourceMap: true,
       presets: [

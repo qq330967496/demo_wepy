@@ -1,7 +1,1 @@
-@import "./../npm/wepy-com-toast/toast.wxss";
-@import "./../components/group.wxss";
-@import "./../components/list.wxss";
-@import "./../components/counter.wxss";
-@import "./../components/counter.wxss";
-@import "./../components/panel.wxss";
-.userinfo{display:flex;flex-direction:column;align-items:center}.userinfo-avatar{width:80rpx;height:80rpx;border-radius:50%}.userinfo-nickname{color:#aaa}
+input{border:1px solid #ccc;margin:10rpx}.container{position:absolute;top:0;left:0;width:100%}image.bg{width:100%;position:relative}.mod.list{margin:0 20rpx;margin-top:300rpx;padding:20rpx}.mod.list .list-item{display:flex}.mod.list .list-item view{display:inline-block}.mod.list .list-item .label{flex:1;color:#a8a8a8}.mod.list .list-item .right{flex:3}.plat_picker{position:absolute;height:100%;width:100%;top:0;left:0}.plat_picker .mask{position:absolute;height:100%;width:100%;top:0;left:0;opacity:0.7;z-index:100;background:#000}.plat_picker .main{position:absolute;bottom:0;left:0;height:40%;width:100%;z-index:101;background:#fff;display:flex;flex-direction:column}.plat_picker .main .title{flex:1;display:flex;text-align:center;border-bottom:1px solid #e4e4e4}.plat_picker .main .title view{flex:1;padding:20rpx}.plat_picker .main .title .text{flex:3}.plat_picker .main .head{flex:1;display:flex;text-align:center}.plat_picker .main .head view{flex:1;padding:20rpx}.plat_picker .main picker-view{flex:5;height:100%;width:100%;text-align:center}.plat_picker .main picker-view picker-view-column view{line-height:250%}.plat_picker .main .plate_ind{border-top:1px solid #efefef;border-bottom:1px solid #efefef;color:#09b6f2}

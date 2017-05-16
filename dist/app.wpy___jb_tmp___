@@ -2,7 +2,7 @@
   page {
     background-color: #ebebeb;
     font-family: 'Microsoft YaHei';
-    font-size:30rpx;
+    font-size:35rpx;
     height:100%;
     line-height: 120%;
   }

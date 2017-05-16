@@ -1,1 +1,1 @@
-{"pages":["pages/index"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"#fff","navigationBarTitleText":"WeChat","navigationBarTextStyle":"black"}}
+{"pages":["pages/index","pages/demo"],"window":{"backgroundColor":"#ebebeb","backgroundTextStyle":"light","navigationBarBackgroundColor":"#09b6f2","navigationBarTitleText":"违章查缴","navigationBarTextStyle":"light"}}
