@@ -30,6 +30,22 @@
   text{
     box-sizing: border-box;
   }
+  input,wx-input{
+    display:inline-block;
+    min-height:0;
+    /*height: 40rpx;*/
+    font-size: 30rpx;
+    width:100%;
+    box-sizing: border-box;
+
+    font-family: 'Microsoft YaHei';
+    font-size:30rpx;
+  }
+  .input-placeholder-class{
+    font-family: 'Microsoft YaHei';
+    font-size:30rpx;
+    color: #cbcbcb;
+  }
 
   /*自定义全局*/
   .mod{
@@ -44,6 +60,14 @@
     /*align-items: center;*/
     /*justify-content: space-between;*/
     box-sizing: border-box;
+  }
+  .btn{
+    width:100%;
+    color:#fff;
+    background: $mainColor;
+    text-align: center;
+    border-radius: 10rpx;
+    padding:25rpx 0;
   }
 </style>
 

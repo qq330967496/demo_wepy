@@ -8,10 +8,10 @@
         </view>
         <view class="right">
           <view class="plate" bindtap="open_plate">
-            {{plat_val}}
+            {{plate_val}}
           </view>
-          <view>
-            <!--<input/>-->
+          <view class="input-mod">
+            <input bindinput="bindPlateNum" placeholder="请输入完整的车牌号" placeholder-class="input-placeholder-class"/>
           </view>
         </view>
       </view>
@@ -20,7 +20,7 @@
           车架号码：
         </view>
         <view class="right">
-          <!--<input/>-->
+          <input bindinput="bindFrameNum" placeholder="车辆码识别后6位" placeholder-class="input-placeholder-class"/>
         </view>
       </view>
       <view class="list-item">
@@ -28,13 +28,17 @@
           发动机号：
         </view>
         <view class="right">
-          <!--<input/>-->
+          <input bindinput="bindEngineNum" placeholder="发动机号后4位" placeholder-class="input-placeholder-class"/>
         </view>
+      </view>
+
+      <view class="list-item">
+        <view class="btn" bindtap="toSearch">去查询</view>
       </view>
     </view>
   </view>
   <!--车牌选择器-->
-  <view class="plat_picker"  wx:if="{{isShowPlat}}">
+  <view class="plate_picker"  wx:if="{{isShowPlat}}">
     <view class="main">
       <view class="title">
         <view class="cancel" bindtap="close_plate">
@@ -57,12 +61,12 @@
         </view>
       </view>
 
-      <picker-view value="{{plat_init}}" indicator-class="plate_ind" bindchange="plate_picker_change">
+      <picker-view value="{{plate_init}}" indicator-class="plate_ind" bindchange="plate_picker_change">
         <picker-view-column>
-          <view wx:key="unique" wx:for="{{plat_short}}">{{item}}</view>
+          <view wx:key="unique" wx:for="{{plate_short}}">{{item}}</view>
         </picker-view-column>
         <picker-view-column>
-          <view wx:key="unique" wx:for="{{plat_letter}}">{{item}}</view>
+          <view wx:key="unique" wx:for="{{plate_letter}}">{{item}}</view>
         </picker-view-column>
       </picker-view>
     </view>

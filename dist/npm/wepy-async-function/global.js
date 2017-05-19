@@ -1,2 +1,1 @@
-var global = module.exports = typeof window !== 'undefined' && window.Math === Math
-  ? window : typeof self !== 'undefined' && self.Math === Math ? self : this;
+var global=module.exports="undefined"!=typeof window&&window.Math===Math?window:"undefined"!=typeof self&&self.Math===Math?self:this;
