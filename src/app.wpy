@@ -1,4 +1,6 @@
 <style lang="scss">
+  @import 'css/common.scss';
+
   page {
     background-color: #ebebeb;
     font-family: 'Microsoft YaHei';

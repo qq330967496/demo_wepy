@@ -7,7 +7,7 @@
           车辆号码：
         </view>
         <view class="right">
-          <view class="plate_picker" bindtap="open_plate">
+          <view class="plate" bindtap="open_plate">
             {{plat_val}}
           </view>
           <view>
@@ -33,8 +33,7 @@
       </view>
     </view>
   </view>
-
-  <!--车牌拾取器-->
+  <!--车牌选择器-->
   <view class="plat_picker"  wx:if="{{isShowPlat}}">
     <view class="main">
       <view class="title">

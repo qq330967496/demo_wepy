@@ -7,7 +7,7 @@
           车辆号码：
         </view>
         <view class="right">
-          <view class="plate_picker" @tap="open_plate">
+          <view class="plate" @tap="open_plate">
             {{plat_val}}
           </view>
           <view>
@@ -33,8 +33,7 @@
       </view>
     </view>
   </view>
-
-  <!--车牌拾取器-->
+  <!--车牌选择器-->
   <view class="plat_picker" wx:if="{{isShowPlat}}">
     <view class="main">
       <view class="title">
@@ -72,6 +71,8 @@
 </template>
 
 <style lang="scss">
+  @import '../css/common.scss';
+
   input{
     border:1px solid #ccc;
     margin:10rpx;
@@ -89,10 +90,14 @@
   .mod.list{
     margin: 0 20rpx;
     margin-top:300rpx;
-    padding:20rpx;
+    border-radius: 15rpx;
 
     .list-item{
       display: flex;
+      border-bottom: 1px solid #ebebeb;
+      padding:30rpx 0;
+      padding-right:30rpx;
+      margin-left:30rpx;
 
       view{
         display: inline-block;
@@ -103,10 +108,30 @@
       }
       .right{
         flex: 3;
+
+        .plate{
+          &:after{
+            content:'';
+            margin-top: 5rpx;
+            margin-left: -20rpx;
+            display: inline-block;
+            vertical-align: middle;
+            border-style: solid;
+            border-width: 10rpx;
+            border-color: #09b6f2 transparent transparent;
+          }
+
+          letter-spacing: 10rpx;
+          padding:0 10rpx;
+          border-radius: 5rpx;
+          border:1px solid $mainColor;
+          color:$mainColor;
+        }
       }
     }
   }
-  /*车牌拾取器*/
+
+  /*车牌选择器*/
   .plat_picker{
     position: absolute;
     height:100%;
@@ -134,14 +159,16 @@
       width:100%;
       z-index: 101;
       background: #fff;
-      display: flex;
-      flex-direction:column;
+      /*display: flex;*/
+      /*flex-direction:column;*/
+
 
       .title{
-        flex:1;
+        /*flex:1;*/
         display: flex;
         text-align: center;
         border-bottom:1px solid #e4e4e4;
+        background: #fff;
         view{
           flex:1;
           padding:20rpx;
@@ -152,9 +179,10 @@
       }
 
       .head{
-        flex:1;
+        /*flex:1;*/
         display: flex;
         text-align: center;
+        background: #fff;
         view{
           flex:1;
           padding:20rpx;
@@ -163,8 +191,8 @@
 
 
       picker-view{
-        flex:5;
-        height:100%;
+        /*flex:5;*/
+        height:70%;
         width:100%;
         text-align: center;
 
@@ -184,6 +212,7 @@
     }
 
   }
+
 </style>
 
 <script>
@@ -197,15 +226,14 @@
 
     data = {
       img_mode: '',
-      val: '',
 
+      //车牌选择器
       isShowPlat: false,
       plat_data:{},//车牌数据
       plat_short: [],//车牌简称
       plat_letter: [],//车牌字母
       plat_val: '粤A',//车牌值
       plat_init:'',//初始化车牌控件的值
-      plat_select_val:'',
     }
 
     computed = {}
@@ -241,13 +269,15 @@
         });
       },
       plate_picker_change: (e) => {
-        var val = e.detail.value
-        this.plat_val = this.plat_short[val[0]];
-        this.plat_val += this.plat_letter[val[1]];
-        this.methods.set_plate_letter(val[0]);
-        this.plat_select_val = val;
+        var that = this;
+        var val = e.detail.value;
+        if(val[0]!=that.plat_init[0]){
+          that.plat_init = val;
+          this.methods.set_plate_letter(val[0]);
+        }else{
+          that.plat_init = val;
+        }
       },
-
       set_plate_letter: (short_index) => {
         var that = this;
         that.plat_letter = [];
@@ -256,7 +286,6 @@
         }
         that.plat_init = [short_index,0];
       },
-
       open_plate: () => {
         var that = this;
         that.isShowPlat = true;
@@ -264,7 +293,8 @@
       close_plate: () => {
         var that = this;
         that.isShowPlat = false;
-        that.plat_init = that.plat_select_val;
+        that.plat_val = that.plat_short[that.plat_init[0]];
+        that.plat_val += that.plat_letter[that.plat_init[1]];
       }
 
 
