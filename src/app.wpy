@@ -83,10 +83,11 @@
   export default class extends wepy.app {
     config = {
       pages: [
-//        'pages/vehicle_list',
+//        'pages/peccancy_list',
 
         'pages/login',
         'pages/vehicle_list',
+        'pages/peccancy_list',
         'pages/index',
         'pages/demo'
       ],

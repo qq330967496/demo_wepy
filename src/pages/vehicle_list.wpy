@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <view class="list">
-      <view class="item" wx:for="{{json_data}}" wx:key="unique">
+      <view class="item" wx:for="{{json_data}}" wx:key="unique" @tap="toDetails({{item.plate_num}})">
         <view class="left">
           <view class="title">
             {{item.plate_num}}
@@ -23,6 +23,94 @@
     </view>
   </view>
 </template>
+
+<script>
+  import wepy from 'wepy'
+  import Utils from '../lib/utils.js'
+  var utils;
+
+
+  export default class Vehicle_list extends wepy.page {
+
+    config = {}
+    components = {}
+
+    data = {
+      json_data: '',
+    }
+
+    computed = {}
+
+    //绑定的方法
+    methods = {
+      toDetails:(plate,$event)=>{
+        var that = this;
+        that.$navigate('/pages/peccancy_list?plate_num='+plate);
+      }
+    }
+
+    //事件处理
+    events = {
+
+    };
+
+    onLoad(options) {
+      var that = this;
+      utils = new Utils(this);
+      utils.init();
+      that.initData();
+
+    }
+
+    initData = () => {
+      var that = this;
+      wepy.request({
+        url: "https://peccancy" + utils.getPrefix() + ".etcchebao.com/v1/query/getCarList",
+        data: {
+          token: wepy.getStorageSync('token'),
+          channelId: utils.getChannelId(),
+        },
+        success: (req) => {
+          let json = req.data;
+          //            json = {
+          //                code:0,
+          //            }
+          console.log(json);
+          if (json.code == 0) {
+            that.json_data = json.data;
+            that.$apply();
+          } else if(json.code == -10001) {
+            wx.showModal({
+              title: '错误',
+              content: json.msg,
+              success: function(res) {
+                if (res.confirm) {
+                  wepy.removeStorage({
+                      key:'token'
+                  });
+                  that.$redirect('/pages/login');
+                }
+              }
+            });
+          } else {
+            wx.showModal({
+              title: '错误',
+              content: json.msg,
+              showCancel: false
+            });
+          }
+        },
+        fail: () => {
+          wx.showModal({
+            title: '错误',
+            content: '网络错误，请重试',
+            showCancel: false
+          });
+        }
+      });
+    }
+  }
+</script>
 
 <style lang="scss">
   @import '../css/common.scss';
@@ -89,84 +177,3 @@
   }
 
 </style>
-
-<script>
-  import wepy from 'wepy'
-  import Utils from '../lib/utils.js'
-  var utils;
-
-
-  export default class Vehicle_list extends wepy.page {
-
-    config = {}
-    components = {}
-
-    data = {
-      json_data: '',
-    }
-
-    computed = {}
-
-    //绑定的方法
-    methods = {}
-
-    //事件处理
-    events = {}
-
-    onLoad() {
-      var that = this;
-      utils = new Utils(this);
-      utils.init();
-      that.initData();
-
-    }
-
-    initData = () => {
-      var that = this;
-      wepy.request({
-        url: "https://peccancy" + utils.getPrefix() + ".etcchebao.com/v1/query/getCarList",
-        data: {
-          token: wepy.getStorageSync('token'),
-          channelId: utils.getChannelId(),
-        },
-        success: (req) => {
-          let json = req.data;
-          //            json = {
-          //                code:0,
-          //            }
-          console.log(json);
-          if (json.code == 0) {
-            that.json_data = json.data;
-            that.$apply();
-          } else if(json.code == -10001) {
-            wx.showModal({
-              title: '错误',
-              content: json.msg,
-              success: function(res) {
-                if (res.confirm) {
-                  wepy.removeStorage({
-                      key:'token'
-                  });
-                  that.$redirect('/pages/login');
-                }
-              }
-            });
-          } else {
-            wx.showModal({
-              title: '错误',
-              content: json.msg,
-              showCancel: false
-            });
-          }
-        },
-        fail: () => {
-          wx.showModal({
-            title: '错误',
-            content: '网络错误，请重试',
-            showCancel: false
-          });
-        }
-      });
-    }
-  }
-</script>
