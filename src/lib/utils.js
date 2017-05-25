@@ -1,6 +1,8 @@
 export default class Utils {
   _self = '';
-  env = '-test';//-dev -test
+  env = '-dev';
+  env = '-test';
+  env = '';
   channelId = 'wzccb';
 
   constructor(that){

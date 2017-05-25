@@ -176,6 +176,7 @@
 //        wepy.request(url).then((d) => console.log(d));
       },
       login:(e)=>{
+        console.log('登录');
         var that = this;
         if(!that.phone || that.phone.length != 11){
           wx.showModal({
@@ -186,50 +187,53 @@
           return;
         }
 
-        if(that.isGetIdCode){
-          that.methods.getIdCode();
-        }else{
-          console.log('登录');
+        if(!that.idCode){
+          wx.showModal({
+            title:'提示',
+            content:'验证码不能为空',
+            showCancel:false
+          });
+          return;
+        }
 
-          wepy.request({
-            url:'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/home/auth',
-            data: {
-              phone:that.phone,
-              code:that.idCode,
-              channelId : utils.getChannelId(),
-            },
-            success: (req) => {
-              let json = req.data;
+        wepy.request({
+          url:'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/home/auth',
+          data: {
+            phone:that.phone,
+            code:that.idCode,
+            channelId : utils.getChannelId(),
+          },
+          success: (req) => {
+            let json = req.data;
 
 //            json = {
 //                code:0,
 //            }
-              console.log(json);
-              if(json.code==0){
-                wepy.setStorage({
-                    key:'token',
-                    data:json.data.token
-                });
-                that.$redirect('/pages/index');
-              }else{
-                wx.showModal({
-                  title:'错误',
-                  content: json.msg,
-                  showCancel:false
-                });
-              }
-
-            },
-            fail:()=>{
+            console.log(json);
+            if(json.code==0){
+              wepy.setStorage({
+                  key:'token',
+                  data:json.data.token
+              });
+              that.$redirect('/pages/vehicle_list');
+            }else{
               wx.showModal({
                 title:'错误',
-                content:'网络错误，请重试',
+                content: json.msg,
                 showCancel:false
               });
             }
-          })
 
-        }
+          },
+          fail:()=>{
+            wx.showModal({
+              title:'错误',
+              content:'网络错误，请重试',
+              showCancel:false
+            });
+          }
+        })
+
 
 
 
@@ -245,8 +249,10 @@
       utils.init();
       var token = wepy.getStorageSync('token');
       if(token){
-          console.log('已登录');
-          that.$redirect('/pages/index');
+          wx.showLoading({
+            title: '正在登录...',
+          })
+          that.$redirect('/pages/vehicle_list');
       }
 
       var s_phone = wepy.getStorageSync('phone');

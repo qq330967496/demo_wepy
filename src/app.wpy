@@ -4,7 +4,7 @@
   page {
     background-color: #ebebeb;
     font-family: 'Microsoft YaHei';
-    font-size:30rpx;
+    font-size:35rpx;
     height:100%;
     line-height: 120%;
   }
@@ -33,16 +33,16 @@
     display:inline-block;
     min-height:0;
     /*height: 40rpx;*/
-    font-size: 30rpx;
+    font-size: 35rpx;
     width:100%;
     box-sizing: border-box;
 
     font-family: 'Microsoft YaHei';
-    font-size:30rpx;
+    font-size:35rpx;
   }
   .input-placeholder-class{
     font-family: 'Microsoft YaHei';
-    font-size:30rpx;
+    font-size:35rpx;
     color: #cbcbcb;
   }
 
@@ -83,7 +83,10 @@
   export default class extends wepy.app {
     config = {
       pages: [
+//        'pages/vehicle_list',
+
         'pages/login',
+        'pages/vehicle_list',
         'pages/index',
         'pages/demo'
       ],

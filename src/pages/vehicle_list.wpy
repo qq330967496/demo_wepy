@@ -1,0 +1,172 @@
+<template>
+  <view class="container">
+    <view class="list">
+      <view class="item" wx:for="{{json_data}}" wx:key="unique">
+        <view class="left">
+          <view class="title">
+            {{item.plate_num}}
+          </view>
+          <view class="subTitle">
+            <view>
+              扣分:<p>{{item.count_violationpoints}}</p>分
+            </view>
+            <view>
+              罚款:<p>{{item.count_fine}}</p>元
+            </view>
+          </view>
+        </view>
+        <view class="right">
+          <view>违章</view>
+          <view>{{item.count_times}}条</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<style lang="scss">
+  @import '../css/common.scss';
+
+  .list {
+    margin-top:20rpx;
+    .item{
+      background: #fff;
+      border-radius: 10rpx;
+      margin:0 20rpx 20rpx;
+      display: flex;
+      .left{
+        flex:5;
+        padding-top:33rpx;
+        padding-left:33rpx;
+        .title{
+          padding-bottom:33rpx;
+        }
+
+        .subTitle{
+          font-size: 30rpx;
+          view{
+            display: inline-block;
+            border-right:2px solid $borderColor;
+            padding-right:20rpx;
+            margin-right:20rpx;
+
+            &:last-child{
+              border-right:0;
+              padding-right:0;
+              margin-right:0;
+            }
+
+
+            p{
+              color:$mainColor;
+            }
+          }
+        }
+      }
+      .right{
+        flex:1;
+        text-align: center;
+        color:$mainColor;
+        position: relative;
+        padding: 50rpx 0;
+        margin-right:30rpx;
+        font-size: 30rpx;
+
+        &:after{
+          content:'';
+          padding:52rpx;
+          height:0;
+          border:1px solid $mainColor;
+          border-radius: 100%;
+          position: absolute;
+          top:0;
+          left:0;
+          bottom:0;
+          margin:auto 0;
+        }
+      }
+    }
+  }
+
+</style>
+
+<script>
+  import wepy from 'wepy'
+  import Utils from '../lib/utils.js'
+  var utils;
+
+
+  export default class Vehicle_list extends wepy.page {
+
+    config = {}
+    components = {}
+
+    data = {
+      json_data: '',
+    }
+
+    computed = {}
+
+    //绑定的方法
+    methods = {}
+
+    //事件处理
+    events = {}
+
+    onLoad() {
+      var that = this;
+      utils = new Utils(this);
+      utils.init();
+      that.initData();
+
+    }
+
+    initData = () => {
+      var that = this;
+      wepy.request({
+        url: "https://peccancy" + utils.getPrefix() + ".etcchebao.com/v1/query/getCarList",
+        data: {
+          token: wepy.getStorageSync('token'),
+          channelId: utils.getChannelId(),
+        },
+        success: (req) => {
+          let json = req.data;
+          //            json = {
+          //                code:0,
+          //            }
+          console.log(json);
+          if (json.code == 0) {
+            that.json_data = json.data;
+            that.$apply();
+          } else if(json.code == -10001) {
+            wx.showModal({
+              title: '错误',
+              content: json.msg,
+              success: function(res) {
+                if (res.confirm) {
+                  wepy.removeStorage({
+                      key:'token'
+                  });
+                  that.$redirect('/pages/login');
+                }
+              }
+            });
+          } else {
+            wx.showModal({
+              title: '错误',
+              content: json.msg,
+              showCancel: false
+            });
+          }
+        },
+        fail: () => {
+          wx.showModal({
+            title: '错误',
+            content: '网络错误，请重试',
+            showCancel: false
+          });
+        }
+      });
+    }
+  }
+</script>
