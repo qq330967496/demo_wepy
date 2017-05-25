@@ -1,0 +1,258 @@
+<template>
+  <view class="container">
+    <view class="bg_mod">
+      <image mode="widthFix" src="../images/bg_login.png" class="bg"></image>
+    </view>
+    <view class="login_mode">
+      <view class="title">
+        用户登录
+      </view>
+      <view class="list">
+        <view class="list-item">
+          <input value="{{phone}}" @input="bindPhone" placeholder="请输入手机号码" placeholder-class=""/>
+        </view>
+        <view class="list-item">
+          <input class="input_idCode" @input="bindIdCode" placeholder="请输入验证码" placeholder-class=""/>
+          <view class="getIdCode">
+            <view class="btn" @tap="getIdCode">
+              获取
+              {{idCodeTime>0?'(':''}}
+              {{idCodeTime>0?idCodeTime:''}}
+              {{idCodeTime>0?')':''}}
+            </view>
+          </view>
+        </view>
+        <view class="list-item">
+          <view class="btn" @tap="login">
+            登录
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<style lang="scss">
+  @import '../css/common.scss';
+
+  .bg_mod {
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: -1;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+  }
+  .login_mode{
+    position: absolute;
+    top:300rpx;
+    left:0;
+    right:0;
+    margin:0 auto;
+    width: 600rpx;
+
+    .title{
+      border-radius: 10rpx 10rpx 0 0;
+      color: #fff;
+      text-align: center;
+      opacity:1;
+      background:rgba(255, 255, 255, 0.2) !important;
+      padding:30rpx 0;
+    }
+    .list{
+      background: #fff;
+      border-radius: 0 0 10rpx 10rpx;
+      .list-item{
+        &:last-child{
+          border-bottom:0;
+        }
+        padding:30rpx 30rpx 30rpx 0;
+        border-bottom:1px solid #ededed;
+        margin-left:30rpx;
+        display: flex;
+      }
+      .input_idCode{
+        flex:2;
+      }
+      .getIdCode{
+        flex:1;
+        .btn{
+          padding:10rpx 0;
+        }
+      }
+    }
+  }
+
+</style>
+
+<script>
+  import wepy from 'wepy'
+  import Utils from '../lib/utils.js'
+  var utils;
+
+
+  export default class Login extends wepy.page {
+
+    config = {}
+    components = {}
+
+    data = {
+      phone: '',//手机号码
+      idCode: '',//验证码
+      isGetIdCode:true,//是否要获取验证码
+      idCodeTime:0,
+    }
+
+    computed = {}
+
+    //绑定的方法
+    methods = {
+      bindPhone:(e)=>{
+        this.phone = e.detail.value;
+      },
+      bindIdCode:(e)=>{
+        this.idCode = e.detail.value;
+      },
+      getIdCode:()=>{
+        var that = this;
+        console.log('获取验证码');
+        wepy.request({
+          url: 'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/home/sms',
+          data: {
+            phone:that.phone,
+            channelId : utils.getChannelId(),
+          },
+          success: (req) => {
+            let json = req.data;
+
+//            json = {
+//                code:0,
+//            }
+            console.log(json);
+            if(json.code==0){
+              wx.showModal({
+                title:'提示',
+                content: '已成功发送验证码',
+                showCancel:false
+              });
+
+              wepy.setStorage({
+                key:'phone',
+                data:that.phone
+              });
+
+              that.isGetIdCode = false;
+              that.idCodeTime = 60;
+              that.$apply();
+
+              var intr = setInterval(()=>{
+                  that.idCodeTime--;
+                  if(that.idCodeTime<1){
+                    that.isGetIdCode = true;
+                      clearInterval(intr);
+                  }
+                  that.$apply();
+              },1000)
+
+            }else{
+              wx.showModal({
+                title:'错误',
+                content: json.msg,
+                showCancel:false
+              });
+            }
+
+          },
+          fail:()=>{
+            wx.showModal({
+              title:'错误',
+              content:'网络错误，请重试',
+              showCancel:false
+            });
+          }
+        })
+
+//        wepy.request(url).then((d) => console.log(d));
+      },
+      login:(e)=>{
+        var that = this;
+        if(!that.phone || that.phone.length != 11){
+          wx.showModal({
+            title:'提示',
+            content:'请输入正确的手机号',
+            showCancel:false
+          });
+          return;
+        }
+
+        if(that.isGetIdCode){
+          that.methods.getIdCode();
+        }else{
+          console.log('登录');
+
+          wepy.request({
+            url:'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/home/auth',
+            data: {
+              phone:that.phone,
+              code:that.idCode,
+              channelId : utils.getChannelId(),
+            },
+            success: (req) => {
+              let json = req.data;
+
+//            json = {
+//                code:0,
+//            }
+              console.log(json);
+              if(json.code==0){
+                wepy.setStorage({
+                    key:'token',
+                    data:json.data.token
+                });
+                that.$redirect('/pages/index');
+              }else{
+                wx.showModal({
+                  title:'错误',
+                  content: json.msg,
+                  showCancel:false
+                });
+              }
+
+            },
+            fail:()=>{
+              wx.showModal({
+                title:'错误',
+                content:'网络错误，请重试',
+                showCancel:false
+              });
+            }
+          })
+
+        }
+
+
+
+      }
+    }
+
+    //事件处理
+    events = {}
+
+    onLoad() {
+      var that = this;
+      utils = new Utils(this);
+      utils.init();
+      var token = wepy.getStorageSync('token');
+      if(token){
+          console.log('已登录');
+          that.$redirect('/pages/index');
+      }
+
+      var s_phone = wepy.getStorageSync('phone');
+      if(s_phone){
+          that.phone = s_phone;
+      }
+    }
+  }
+</script>

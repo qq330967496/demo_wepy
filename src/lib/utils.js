@@ -1,21 +1,19 @@
-import wepy from 'wepy'
+export default class Utils {
+  _self = '';
+  env = '-test';//-dev -test
+  channelId = 'wzccb';
 
-export default class utils extends wepy.mixin {
-  data = {
-
+  constructor(that){
+    this._self = that;
   }
-  methods = {
-    tap () {
-      this.mixin = 'mixin data was changed'
-      console.log('mixin method tap')
-    }
+  init(){
+    // this._self.env = this._self.$wxapp.$app.globalData.env;
   }
-
-  onShow() {
-    console.log('mixin onShow')
+  getPrefix(){
+    //-dev -test
+    return this.env;
   }
-
-  onLoad() {
-    console.log('mixin onLoad')
+  getChannelId(){
+    return this.channelId;
   }
 }

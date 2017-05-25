@@ -1,1 +1,45 @@
-"use strict";function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var _createClass=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),_wepy=require("./../npm/wepy/lib/wepy.js"),_wepy2=_interopRequireDefault(_wepy),utils=function(e){function t(){var e,o,n,r;_classCallCheck(this,t);for(var i=arguments.length,a=Array(i),u=0;u<i;u++)a[u]=arguments[u];return o=n=_possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(a))),n.data={},n.methods={tap:function(){this.mixin="mixin data was changed",console.log("mixin method tap")}},r=o,_possibleConstructorReturn(n,r)}return _inherits(t,e),_createClass(t,[{key:"onShow",value:function(){console.log("mixin onShow")}},{key:"onLoad",value:function(){console.log("mixin onLoad")}}]),t}(_wepy2.default.mixin);exports.default=utils;
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Utils = function () {
+  function Utils(that) {
+    _classCallCheck(this, Utils);
+
+    this._self = '';
+    this.env = '-test';
+    this.channelId = 'wzccb';
+
+    this._self = that;
+  } //-dev -test
+
+
+  _createClass(Utils, [{
+    key: 'init',
+    value: function init() {
+      // this._self.env = this._self.$wxapp.$app.globalData.env;
+    }
+  }, {
+    key: 'getPrefix',
+    value: function getPrefix() {
+      //-dev -test
+      return this.env;
+    }
+  }, {
+    key: 'getChannelId',
+    value: function getChannelId() {
+      return this.channelId;
+    }
+  }]);
+
+  return Utils;
+}();
+
+exports.default = Utils;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInV0aWxzLmpzIl0sIm5hbWVzIjpbIlV0aWxzIiwidGhhdCIsIl9zZWxmIiwiZW52IiwiY2hhbm5lbElkIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0lBQXFCQSxLO0FBS25CLGlCQUFZQyxJQUFaLEVBQWlCO0FBQUE7O0FBQUEsU0FKakJDLEtBSWlCLEdBSlQsRUFJUztBQUFBLFNBSGpCQyxHQUdpQixHQUhYLE9BR1c7QUFBQSxTQUZqQkMsU0FFaUIsR0FGTCxPQUVLOztBQUNmLFNBQUtGLEtBQUwsR0FBYUQsSUFBYjtBQUNELEcsQ0FMYTs7Ozs7MkJBTVI7QUFDSjtBQUNEOzs7Z0NBQ1U7QUFDVDtBQUNBLGFBQU8sS0FBS0UsR0FBWjtBQUNEOzs7bUNBQ2E7QUFDWixhQUFPLEtBQUtDLFNBQVo7QUFDRDs7Ozs7O2tCQWpCa0JKLEsiLCJmaWxlIjoidXRpbHMuanMiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgZGVmYXVsdCBjbGFzcyBVdGlscyB7XG4gIF9zZWxmID0gJyc7XG4gIGVudiA9ICctdGVzdCc7Ly8tZGV2IC10ZXN0XG4gIGNoYW5uZWxJZCA9ICd3emNjYic7XG5cbiAgY29uc3RydWN0b3IodGhhdCl7XG4gICAgdGhpcy5fc2VsZiA9IHRoYXQ7XG4gIH1cbiAgaW5pdCgpe1xuICAgIC8vIHRoaXMuX3NlbGYuZW52ID0gdGhpcy5fc2VsZi4kd3hhcHAuJGFwcC5nbG9iYWxEYXRhLmVudjtcbiAgfVxuICBnZXRQcmVmaXgoKXtcbiAgICAvLy1kZXYgLXRlc3RcbiAgICByZXR1cm4gdGhpcy5lbnY7XG4gIH1cbiAgZ2V0Q2hhbm5lbElkKCl7XG4gICAgcmV0dXJuIHRoaXMuY2hhbm5lbElkO1xuICB9XG59XG4iXX0=

@@ -20,7 +20,6 @@
   image{
     box-sizing: border-box;
     width:100%;
-    height:0;
   }
   view{
     box-sizing: border-box;
@@ -54,6 +53,11 @@
   }
   /*容器*/
   .container {
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    min-height:100%;
 
     display: flex;
     flex-direction: column;
@@ -79,6 +83,7 @@
   export default class extends wepy.app {
     config = {
       pages: [
+        'pages/login',
         'pages/index',
         'pages/demo'
       ],
@@ -86,13 +91,14 @@
         backgroundColor: '#ebebeb',
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#09b6f2',
-        navigationBarTitleText: '违章查缴',
+        navigationBarTitleText: '暗黑ETC车宝',
         navigationBarTextStyle: 'light'
       }
     }
 
     globalData = {
-      img_mode: 'widthFix'
+      img_mode: 'widthFix',
+      env:'-dev',//环境
     }
 
     constructor() {
