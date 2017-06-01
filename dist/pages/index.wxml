@@ -1,5 +1,5 @@
 
-  <image mode="{{img_mode}}" src="../images/bg_main.png" class="bg"/>
+  <image mode="widthFix" src="../images/bg_main.png" class="bg"/>
   <view class="container">
     <view class="mod list">
       <view class="list-item">
@@ -41,14 +41,14 @@
   <view class="plate_picker"  wx:if="{{isShowPlat}}">
     <view class="main">
       <view class="title">
-        <view class="cancel" bindtap="close_plate">
-          取消
+        <view class="cancel">
+          <!--取消-->
         </view>
         <view class="text">
           请选择车牌
         </view>
-        <view class="ok" bindtap="close_plate">
-          确定
+        <view class="ok">
+          <!--确定-->
         </view>
       </view>
 

@@ -1,0 +1,54 @@
+<template>
+  <view class="container">
+    <view class="mod">
+      <view>
+        双向绑定
+      </view>
+      <view>
+        <input @input="keyInput"/>
+      </view>
+      <view>
+        输入的结果：{{val}}
+      </view>
+    </view>
+  </view>
+</template>
+
+<style lang="scss">
+  input{
+    border:1px solid #ccc;
+    margin:10rpx;
+  }
+</style>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Demo extends wepy.page {
+    config = {}
+    components = {}
+
+//    mixins = [testMixin]
+
+    data = {
+      msg: '数据',
+      val: ''
+    }
+
+    computed = {}
+
+    methods = {
+      'keyInput': (e) => {
+        this.val = e.detail.value
+      }
+    }
+
+    events = {
+
+    }
+
+    onLoad() {
+      console.log('加载')
+    }
+  }
+</script>

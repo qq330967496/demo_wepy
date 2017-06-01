@@ -1,0 +1,33 @@
+
+  <view class="container">
+    <view class="list">
+      <view class="item"  wx:for="{{json_data}}" wx:key="unique" bindtap="toDetails" data-wepy-params-a="{{item.plate_num}}">
+        <view class="left">
+          <view class="title">
+            {{item.plate_num}}
+          </view>
+          <view class="subTitle">
+            <view>
+              扣分:<p>{{item.count_violationpoints}}</p>分
+            </view>
+            <view>
+              罚款:<p>{{item.count_fine}}</p>元
+            </view>
+          </view>
+        </view>
+        <view class="right">
+          <view>违章</view>
+          <view>{{item.count_times}}条</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="bottom">
+      <view class="btn" bindtap="addCar">
+        添加车辆
+      </view>
+      <view class="btn" bindtap="changeUser">
+        更换用户
+      </view>
+    </view>
+  </view>
