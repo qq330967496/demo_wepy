@@ -91,12 +91,20 @@
 
     initData = () => {
       var that = this;
+      that.json_data = {};
+      wx.showLoading({
+        title:'加载中',
+        mask:true,
+      });
       wepy.request({
         url: "https://peccancy" + utils.getPrefix() + ".etcchebao.com/v1/query/getPeccancyList",
         data: {
           token: wepy.getStorageSync('token'),
           channelId: utils.getChannelId(),
           plate_num:that.plate_num,
+        },
+        complete:()=>{
+          wx.hideLoading();
         },
         success: (req) => {
           let json = req.data;

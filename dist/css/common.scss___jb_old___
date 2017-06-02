@@ -1,5 +1,0 @@
-/*通用：只定义变量和方法*/
-$mainColor: #09b6f2; /*主颜色*/
-$color_border: #ebebeb; /*边框颜色*/
-$labelColor: #a8a8a8; /*标记颜色*/
-

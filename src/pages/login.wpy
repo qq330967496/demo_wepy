@@ -117,11 +117,18 @@
       getIdCode:()=>{
         let that = this;
         console.log('获取验证码');
+        wx.showLoading({
+          title:'获取验证码中',
+          mask:true,
+        });
         wepy.request({
           url: 'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/home/sms',
           data: {
             phone:that.phone,
             channelId : utils.getChannelId(),
+          },
+          complete:()=>{
+//            wx.hideLoading();
           },
           success: (req) => {
             let json = req.data;
@@ -131,10 +138,9 @@
 //            }
             console.log('获取验证码',json);
             if(json.code==0){
-              wepy.showModal({
-                title:'提示',
-                content: '已成功发送验证码',
-                showCancel:false
+              wx.showToast({
+                icon:'success',
+                title:'已成功发送验证码',
               });
 
               wepy.setStorage({
@@ -156,6 +162,7 @@
               },1000)
 
             }else{
+              wx.hideLoading();
               wepy.showModal({
                 title:'错误',
                 content: json.msg,
@@ -165,6 +172,7 @@
 
           },
           fail:()=>{
+            wx.hideLoading();
             wepy.showModal({
               title:'错误',
               content:'网络错误，请重试',
@@ -196,12 +204,19 @@
           return;
         }
 
+        wx.showLoading({
+          title:'登录中',
+          mask:true,
+        });
         wepy.request({
           url:'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/home/auth',
           data: {
             phone:that.phone,
             code:that.idCode,
             channelId : utils.getChannelId(),
+          },
+          complete:()=>{
+            wx.hideLoading();
           },
           success: (req) => {
             let json = req.data;
@@ -248,8 +263,9 @@
       utils.init();
       let token = wepy.getStorageSync('token');
       if(token){
-          wepy.showLoading({
-            title: '正在登录...',
+          wx.showLoading({
+            title: '登录中',
+            mask:true,
           })
           that.$redirect('/pages/vehicle_list');
       }

@@ -75,7 +75,6 @@
 </template>
 
 
-
 <script>
   import wepy from 'wepy';
   import Utils from '../lib/utils.js';
@@ -89,53 +88,60 @@
 
     data = {
       img_mode: '',
-      plate_num:'',
-      frame_num:'',
-      engine_num:'',
+      plate_num: '',
+      frame_num: '',
+      engine_num: '',
 
 
       //车牌选择器
       plate_val: '粤A',//车牌值
       isShowPlat: false,
-      plate_data:{},//车牌数据
+      plate_data: {},//车牌数据
       plate_short: [],//车牌简称
       plate_letter: [],//车牌字母
-      plate_init:'',//初始化车牌控件的值
+      plate_init: '',//初始化车牌控件的值
     }
 
     computed = {}
 
     //绑定的方法
     methods = {
-      bindPlateNum:function(e){
+      bindPlateNum: function (e) {
         this.plate_num = e.detail.value
       },
-      bindFrameNum:function(e){
+      bindFrameNum: function (e) {
         this.frame_num = e.detail.value
       },
-      bindEngineNum:function(e){
+      bindEngineNum: function (e) {
         this.engine_num = e.detail.value
       },
 
-      toSearch:function(e){
+      toSearch: function (e) {
 //        wx.navigateBack('/pages/vehicle_list');
 //        return;
 
         var that = this;
         console.log("查询");
-//        console.log("车辆号码：",that.plate_val+that.plate_num);
-//        console.log("车架号码：",that.frame_num);
-//        console.log("发动机号：",that.engine_num);
+        console.log("车辆号码：", that.plate_val + that.plate_num);
+        console.log("车架号码：", that.frame_num);
+        console.log("发动机号：", that.engine_num);
 
+        wx.showLoading({
+          title: '查询中',
+          mask:true,
+        });
         wepy.request({
-          url: 'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/query/bind',
+          url: 'https://peccancy' + utils.getPrefix() + '.etcchebao.com/v1/query/bind',
           data: {
-            token:wepy.getStorageSync('token'),
-            channelId : utils.getChannelId(),
-            plate_num : that.plate_val+that.plate_num,
+            token: wepy.getStorageSync('token'),
+            channelId: utils.getChannelId(),
+            plate_num: that.plate_val + that.plate_num,
             vin: that.frame_num,
-            engine : that.engine_num,
-            vehicle_color : "02",
+            engine: that.engine_num,
+            vehicle_color: "02",
+          },
+          complete: () => {
+
           },
           success: (req) => {
             let json = req.data;
@@ -143,81 +149,66 @@
 //            json = {
 //                code:0,
 //            }
-            console.log('添加车辆',json);
-            if(json.code==0){
-              wepy.showModal({
+            console.log('添加车辆', json);
+            if (json.code == 0) {
+              wx.showToast({
+                icon:'success',
+                title:'添加成功',
+                success: function () {
+                  wx.navigateBack('/pages/vehicle_list');
+                }
+              });
+
+              /*wepy.showModal({
                 title: '提醒',
                 content: '添加成功',
-                showCancel:false,
+                showCancel: false,
                 success: function (res) {
                   if (res.confirm) {
 //                    that.$redirect('/pages/vehicle_list');
                     wx.navigateBack('/pages/vehicle_list');
                   }
                 }
-              });
-            }else{
+              });*/
+            } else {
+              wx.hideLoading();
               wepy.showModal({
-                title:'错误',
+                title: '错误',
                 content: json.msg,
-                showCancel:false
+                showCancel: false
               });
             }
 
           },
-          fail:()=>{
+          fail: () => {
+            wx.hideLoading();
             wepy.showModal({
-              title:'错误',
-              content:'网络错误，请重试',
-              showCancel:false
+              title: '错误',
+              content: '网络错误，请重试',
+              showCancel: false
             });
           }
         })
 
       },
 
-      //车牌选择器
-      init_plate: () => {
-        var that = this;
-        wepy.request({
-          url:'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/query/provinces',
-          success:(json)=>{
-            that.plate_short = [];
-            that.plate_letter = [];
-            that.plate_data = json.data.data;
-            console.log(json.data);
-            if(json.data.code==0){
-              for(var i=0;i<json.data.data.length;i++){
-                that.plate_short.push(json.data.data[i].province);
-                if('粤' == json.data.data[i].province){
-                  for(var j=0;j<json.data.data[i].citys.length;j++){
-                    that.plate_letter.push(json.data.data[i].citys[j].city_code);
-                  }
-
-                }
-              }
-              that.plate_init = [14,0];
-            }
-          }
-        });
-      },
       plate_picker_change: (e) => {
         var that = this;
         var val = e.detail.value;
-        if(val[0]!=that.plate_init[0]){
+        if (val[0] != that.plate_init[0]) {
           that.plate_init = val;
           this.methods.set_plate_letter(val[0]);
-        }else{
+        } else {
           that.plate_init = val;
         }
       },
       set_plate_letter: (short_index) => {
         var that = this;
         that.plate_letter = [];
-        for(var j=0;j<that.plate_data[short_index].citys.length;j++){
+        for (var j = 0; j < that.plate_data[short_index].citys.length; j++) {
           that.plate_letter.push(that.plate_data[short_index].citys[j].city_code);
         }
-        that.plate_init = [short_index,0];
+        that.plate_init = [short_index, 0];
       },
       open_plate: () => {
         var that = this;
@@ -231,14 +222,10 @@
       },
 
 
-
-
     }
 
     //事件处理
-    events = {
-
-    }
+    events = {}
 
     onLoad() {
       var that = this;
@@ -246,7 +233,45 @@
       utils.init();
 
       that.img_mode = this.$wxapp.$app.globalData.img_mode;
-      that.methods.init_plate();
+
+    }
+
+    onShow() {
+      var that = this;
+      that.init_plate();
+    }
+
+    //车牌选择器
+    init_plate() {
+      var that = this;
+      wx.showLoading({
+        title: '加载中',
+        mask:true,
+      });
+      wepy.request({
+        url: 'https://peccancy' + utils.getPrefix() + '.etcchebao.com/v1/query/provinces',
+        complete: () => {
+          wx.hideLoading();
+        },
+        success: (json) => {
+          that.plate_short = [];
+          that.plate_letter = [];
+          that.plate_data = json.data.data;
+          console.log(json.data);
+          if (json.data.code == 0) {
+            for (var i = 0; i < json.data.data.length; i++) {
+              that.plate_short.push(json.data.data[i].province);
+              if ('粤' == json.data.data[i].province) {
+                for (var j = 0; j < json.data.data[i].citys.length; j++) {
+                  that.plate_letter.push(json.data.data[i].citys[j].city_code);
+                }
+
+              }
+            }
+            that.plate_init = [14, 0];
+          }
+        }
+      });
     }
   }
 </script>
@@ -254,58 +279,60 @@
 <style lang="scss">
   @import '../css/common.scss';
 
-  .container{
+  .container {
     position: absolute;
-    top:0;
-    left:0;
-    width:100%;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
-  image.bg{
-    width:100%;
+
+  image.bg {
+    width: 100%;
     position: relative;
   }
-  .mod.list{
+
+  .mod.list {
     margin: 0 20rpx;
-    margin-top:300rpx;
+    margin-top: 300rpx;
     border-radius: 15rpx;
 
-    .list-item{
+    .list-item {
       display: flex;
       border-bottom: 1px solid $color_border;
-      padding:30rpx 0;
-      padding-right:30rpx;
-      margin-left:30rpx;
+      padding: 30rpx 0;
+      padding-right: 30rpx;
+      margin-left: 30rpx;
 
-      &:last-child{
-        border-bottom:0;
+      &:last-child {
+        border-bottom: 0;
       }
 
-      input{
-        padding-left:30rpx;
+      input {
+        padding-left: 30rpx;
       }
-      view{
+      view {
         display: inline-block;
       }
-      .label{
+      .label {
         flex: 1;
         color: $color_label;
-        padding:10rpx 0;
+        padding: 10rpx 0;
       }
-      .right{
+      .right {
         flex: 2.5;
         display: flex;
 
-        .plate{
+        .plate {
           letter-spacing: 10rpx;
-          padding:10rpx 0;
+          padding: 10rpx 0;
           border-radius: 5rpx;
-          border:1px solid $color_main;
+          border: 1px solid $color_main;
           color: $color_main;
-          flex:1;
+          flex: 1;
           text-align: center;
 
-          &:after{
-            content:'';
+          &:after {
+            content: '';
             margin-top: 5rpx;
             margin-left: -20rpx;
             display: inline-block;
@@ -315,90 +342,87 @@
             border-color: $color_main transparent transparent;
           }
         }
-        .input-mod{
-          flex:3;
+        .input-mod {
+          flex: 3;
         }
       }
     }
   }
 
   /*车牌选择器*/
-  .plate_picker{
+  .plate_picker {
     position: absolute;
-    height:100%;
-    width:100%;
-    top:0;
-    left:0;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
 
-
-    .mask{
+    .mask {
       position: absolute;
-      height:100%;
-      width:100%;
-      top:0;
-      left:0;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
       opacity: 0.7;
       z-index: 100;
       background: #000;
     }
 
-    .main{
+    .main {
       position: absolute;
-      bottom:0;
-      left:0;
-      width:100%;
+      bottom: 0;
+      left: 0;
+      width: 100%;
       z-index: 101;
       background: #fff;
       /*display: flex;*/
       /*flex-direction:column;*/
 
-
-      .title{
+      .title {
         /*flex:1;*/
         display: flex;
         text-align: center;
-        border-bottom:1px solid #e4e4e4;
+        border-bottom: 1px solid #e4e4e4;
         background: #fff;
-        view{
-          flex:1;
-          padding:20rpx;
+        view {
+          flex: 1;
+          padding: 20rpx;
         }
-        .text{
-          flex:3;
+        .text {
+          flex: 3;
         }
       }
 
-      .head{
+      .head {
         /*flex:1;*/
         display: flex;
         text-align: center;
         background: #fff;
-        view{
-          flex:1;
-          padding:20rpx;
+        view {
+          flex: 1;
+          padding: 20rpx;
         }
       }
 
-
-      picker-view{
+      picker-view {
         /*flex:5;*/
-        height:500rpx;
-        width:100%;
+        height: 500rpx;
+        width: 100%;
         text-align: center;
 
-        picker-view-column{
-          view{
+        picker-view-column {
+          view {
             /*height:75.1rpx !important;*/
             line-height: 250%;
           }
         }
       }
-      .plate_ind{
+      .plate_ind {
         border-top: 1px solid #efefef;
         border-bottom: 1px solid #efefef;
         color: #09b6f2;
-        margin-top:7rpx;
-        height:70rpx;
+        margin-top: 7rpx;
+        height: 70rpx;
       }
     }
 

@@ -21,8 +21,8 @@
             <view>{{item.count_times}}条</view>
           </view>
         </view>
-        <view bindtap="remove" style="right:{{item.draw_distance-draw.maxRight}}rpx" class="del">
-          <view>删除</view>
+        <view catchtap="remove" data-platenum="{{item.plate_num}}" style="right:{{item.draw_distance-draw.maxDistance}}rpx" class="del">
+          <view>移除</view>
         </view>
       </view>
     </view>

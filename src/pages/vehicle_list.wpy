@@ -47,7 +47,9 @@
 
   export default class Vehicle_list extends wepy.page {
 
-    config = {};
+    config = {
+      enablePullDownRefresh:true,
+    };
     components = {};
 
     data = {
@@ -137,16 +139,23 @@
         var platenum = e.currentTarget.dataset.platenum;
         wx.showModal({
           title: '提示',
-          content: '确定车牌为【'+platenum+'】的车吗？',
+          content: '确定移除【'+platenum+'】？',
           success: function(res) {
             if (res.confirm) {
               console.log("移除",platenum);
+              wx.showLoading({
+                title:'移除中',
+                mask:true,
+              });
               wepy.request({
                 url: 'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/query/removeCar',
                 data: {
                   token:wepy.getStorageSync('token'),
                   channelId : utils.getChannelId(),
                   plate_num : platenum,
+                },
+                complete:()=>{
+                  wx.hideLoading();
                 },
                 success: (req) => {
                   let json = req.data;
@@ -212,6 +221,12 @@
       that.initData();
     }
 
+    onPullDownRefresh(){
+      console.log("下拉");
+      let that = this;
+      that.initData();
+    }
+
     filterData = (arr)=>{
       if(!arr){
           return [];
@@ -224,11 +239,19 @@
 
     initData = () => {
       let that = this;
+      wx.showLoading({
+        title:'加载中',
+        mask:true,
+      });
       wepy.request({
         url: "https://peccancy" + utils.getPrefix() + ".etcchebao.com/v1/query/getCarList",
         data: {
           token: wepy.getStorageSync('token'),
           channelId: utils.getChannelId(),
+        },
+        complete:()=>{
+          wx.hideLoading();
+          wx.stopPullDownRefresh();
         },
         success: (req) => {
           let json = req.data;
