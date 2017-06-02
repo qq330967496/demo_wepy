@@ -118,6 +118,9 @@
       },
 
       toSearch:function(e){
+//        wx.navigateBack('/pages/vehicle_list');
+//        return;
+
         var that = this;
         console.log("查询");
 //        console.log("车辆号码：",that.plate_val+that.plate_num);
@@ -147,7 +150,8 @@
                 content: '添加成功',
                 success: function (res) {
                   if (res.confirm) {
-                    that.$redirect('/pages/vehicle_list');
+//                    that.$redirect('/pages/vehicle_list');
+                    wx.navigateBack('/pages/vehicle_list');
                   }
                 }
               });

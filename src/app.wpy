@@ -97,7 +97,8 @@
         navigationBarBackgroundColor: '#09b6f2',
         navigationBarTitleText: '暗黑ETC车宝',
         navigationBarTextStyle: 'light'
-      }
+      },
+      debug:true
     }
 
     globalData = {
