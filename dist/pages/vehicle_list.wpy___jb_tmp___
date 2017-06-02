@@ -85,8 +85,10 @@
       let that = this;
       utils = new Utils(this);
       utils.init();
+    }
+    onShow(){
+      let that = this;
       that.initData();
-
     }
 
     initData = () => {

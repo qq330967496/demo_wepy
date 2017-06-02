@@ -73,6 +73,10 @@
       that.plate_num = options.plate_num;
       that.plate_l = that.plate_num.substr(0,2);
       that.plate_r = that.plate_num.substr(2,that.plate_num.length);
+    }
+
+    onShow(){
+      var that = this;
       that.initData();
     }
 
