@@ -23,8 +23,8 @@
             <view>{{item.count_times}}条</view>
           </view>
         </view>
-        <view @tap="remove" style="right:{{item.draw_distance-draw.maxRight}}rpx" class="del">
-          <view>删除</view>
+        <view catchtap="remove" data-platenum="{{item.plate_num}}" style="right:{{item.draw_distance-draw.maxDistance}}rpx" class="del">
+          <view>移除</view>
         </view>
       </view>
     </view>
@@ -58,7 +58,7 @@
         isDrawing:false,
         endX:0,
         endY:0,
-        maxRight:100//最大右侧距离，单位是rpx
+        maxDistance:100//拖拽最大距离，单位是rpx
       },
     };
 
@@ -85,7 +85,7 @@
               that.$redirect('/pages/login');
             }
           }
-        })
+        });
       },
 
       drawStart:(e)=>{
@@ -115,10 +115,11 @@
           }
           //从右往左
           if((that.draw.endX - that.draw.startX) < 0){
+            //所有拖拽距离还原为0
             for(var i=0;i<that.json_data.length;i++){
               that.json_data[i].draw_distance = 0;
             }
-            that.json_data[id].draw_distance = that.draw.maxRight;
+            that.json_data[id].draw_distance = that.draw.maxDistance;
           }else{//从左往右
             that.json_data[id].draw_distance = 0;
           }
@@ -132,8 +133,67 @@
         that.$apply();
       },
       remove:(e)=>{
-        console.log("删除");
+        var that = this;
+        var platenum = e.currentTarget.dataset.platenum;
+        wx.showModal({
+          title: '提示',
+          content: '确定车牌为【'+platenum+'】的车吗？',
+          success: function(res) {
+            if (res.confirm) {
+              console.log("移除",platenum);
+              wepy.request({
+                url: 'https://peccancy'+utils.getPrefix()+'.etcchebao.com/v1/query/removeCar',
+                data: {
+                  token:wepy.getStorageSync('token'),
+                  channelId : utils.getChannelId(),
+                  plate_num : platenum,
+                },
+                success: (req) => {
+                  let json = req.data;
 
+//                json = {
+//                    code:0,
+//                }
+                  console.log('移除车辆',json);
+                  if(json.code==0){
+                    wepy.showModal({
+                      title: '提醒',
+                      content: '移除成功',
+                      showCancel:false,
+                      success: function (res) {
+                        if (res.confirm) {
+                          that.json_data=[];
+                          that.$apply();
+                          that.initData();
+                        }
+                      }
+                    });
+                  }else{
+                    wepy.showModal({
+                      title:'错误',
+                      content: json.msg,
+                      showCancel:false
+                    });
+                  }
+
+                },
+                fail:()=>{
+                  wepy.showModal({
+                    title:'错误',
+                    content:'网络错误，请重试',
+                    showCancel:false
+                  });
+                }
+              })
+            }
+            if (res.cancel){
+              for(var i=0;i<that.json_data.length;i++){
+                that.json_data[i].draw_distance = 0;
+              }
+              that.$apply();
+            }
+          }
+        })
       }
     };
 
@@ -214,8 +274,6 @@
 
 <style lang="scss">
   @import '../css/common.scss';
-
-  @charset "utf-8";
 
   .list {
     margin-top:20rpx;

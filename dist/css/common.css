@@ -3,9 +3,10 @@ Error: Invalid GBK character "\xE9"
         on line 1 of common.scss
 
 1: /*通用：只定义变量和方法*\/
-2: $color_main: #09b6f2; /*主颜色*\/
-3: $color_border: #dcdcdc; /*边框颜色*\/
-4: $color_label: #a8a8a8; /*标记颜色*\/
+2: @charset "utf-8";
+3: $color_main: #09b6f2; /*主颜色*\/
+4: $color_border: #dcdcdc; /*边框颜色*\/
+5: $color_label: #a8a8a8; /*标记颜色*\/
 
 Backtrace:
 common.scss:1
@@ -35,4 +36,4 @@ C:/Ruby24-x64/bin/scss:22:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE9\"\A         on line 1 of common.scss\A \A 1: /*通用：只定义变量和方法*/\A 2: $color_main: #09b6f2; /*主颜色*/\A 3: $color_border: #dcdcdc; /*边框颜色*/\A 4: $color_label: #a8a8a8; /*标记颜色*/"; }
+  content: "Error: Invalid GBK character \"\xE9\"\A         on line 1 of common.scss\A \A 1: /*通用：只定义变量和方法*/\A 2: @charset \"utf-8\";\A 3: $color_main: #09b6f2; /*主颜色*/\A 4: $color_border: #dcdcdc; /*边框颜色*/\A 5: $color_label: #a8a8a8; /*标记颜色*/"; }

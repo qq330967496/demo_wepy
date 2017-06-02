@@ -148,6 +148,7 @@
               wepy.showModal({
                 title: '提醒',
                 content: '添加成功',
+                showCancel:false,
                 success: function (res) {
                   if (res.confirm) {
 //                    that.$redirect('/pages/vehicle_list');
