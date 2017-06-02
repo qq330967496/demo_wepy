@@ -2,22 +2,27 @@
   <view class="container">
     <view class="list">
       <view class="item"  wx:for="{{json_data}}" wx:key="unique" bindtap="toDetails" data-wepy-params-a="{{item.plate_num}}">
-        <view class="left">
-          <view class="title">
-            {{item.plate_num}}
+        <view class="draw" data-id="{{index}}" bindtouchstart="drawStart" bindtouchmove="drawMove" bindtouchend="drawEnd" style="margin-left:-{{item.draw_distance}}rpx">
+          <view class="left">
+            <view class="title">
+              {{item.plate_num}}
+            </view>
+            <view class="subTitle">
+              <view>
+                扣分:<p>{{item.count_violationpoints}}</p>分
+              </view>
+              <view>
+                罚款:<p>{{item.count_fine}}</p>元
+              </view>
+            </view>
           </view>
-          <view class="subTitle">
-            <view>
-              扣分:<p>{{item.count_violationpoints}}</p>分
-            </view>
-            <view>
-              罚款:<p>{{item.count_fine}}</p>元
-            </view>
+          <view class="right">
+            <view>违章</view>
+            <view>{{item.count_times}}条</view>
           </view>
         </view>
-        <view class="right">
-          <view>违章</view>
-          <view>{{item.count_times}}条</view>
+        <view bindtap="remove" style="right:{{item.draw_distance-draw.maxRight}}rpx" class="del">
+          <view>删除</view>
         </view>
       </view>
     </view>

@@ -83,13 +83,13 @@
   export default class extends wepy.app {
     config = {
       pages: [
-//        'pages/index',
+//        'pages/vehicle_list',//调试用
 
-        'pages/login',
-        'pages/vehicle_list',
-        'pages/peccancy_list',
-        'pages/index',
-        'pages/demo'
+        'pages/login',//登录
+        'pages/vehicle_list',//车辆列表
+        'pages/peccancy_list',//违章列表
+        'pages/index',//添加车辆
+        'pages/demo',//模板
       ],
       window: {
         backgroundColor: '#ebebeb',
@@ -98,7 +98,7 @@
         navigationBarTitleText: '暗黑ETC车宝',
         navigationBarTextStyle: 'light'
       },
-      debug:true
+//      debug:true
     }
 
     globalData = {

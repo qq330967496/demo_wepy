@@ -2,22 +2,29 @@
   <view class="container">
     <view class="list">
       <view class="item" wx:for="{{json_data}}" wx:key="unique" @tap="toDetails({{item.plate_num}})">
-        <view class="left">
-          <view class="title">
-            {{item.plate_num}}
+        <view class="draw" data-id="{{index}}"
+              @touchstart="drawStart" @touchmove="drawMove" @touchend="drawEnd"
+              style="margin-left:-{{item.draw_distance}}rpx">
+          <view class="left">
+            <view class="title">
+              {{item.plate_num}}
+            </view>
+            <view class="subTitle">
+              <view>
+                扣分:<p>{{item.count_violationpoints}}</p>分
+              </view>
+              <view>
+                罚款:<p>{{item.count_fine}}</p>元
+              </view>
+            </view>
           </view>
-          <view class="subTitle">
-            <view>
-              扣分:<p>{{item.count_violationpoints}}</p>分
-            </view>
-            <view>
-              罚款:<p>{{item.count_fine}}</p>元
-            </view>
+          <view class="right">
+            <view>违章</view>
+            <view>{{item.count_times}}条</view>
           </view>
         </view>
-        <view class="right">
-          <view>违章</view>
-          <view>{{item.count_times}}条</view>
+        <view @tap="remove" style="right:{{item.draw_distance-draw.maxRight}}rpx" class="del">
+          <view>删除</view>
         </view>
       </view>
     </view>
@@ -45,6 +52,14 @@
 
     data = {
       json_data: '',
+      draw:{
+        startX:0,
+        startY:0,
+        isDrawing:false,
+        endX:0,
+        endY:0,
+        maxRight:100//最大右侧距离，单位是rpx
+      },
     };
 
     computed = {};
@@ -71,9 +86,55 @@
             }
           }
         })
-
-
       },
+
+      drawStart:(e)=>{
+//        console.log("拖动开始");
+        var that = this;
+        var touch = e.touches[0];
+        that.draw.startX = touch.clientX;
+        that.draw.startY = touch.clientY;
+        that.draw.isDrawing = true;
+//        console.log(e.currentTarget.dataset.id);
+//        return;
+        that.$apply();
+      },
+      drawMove:(e)=>{
+        var that = this;
+        var id = e.currentTarget.dataset.id;
+//        console.log("拖动");
+
+        if(that.draw.isDrawing) {
+          var touch = e.touches[0];
+          that.draw.endX = touch.clientX;
+          that.draw.endY = touch.clientY;
+
+          //垂直滑动 or 不滑动
+          if(that.draw.endX - that.draw.startX == 0){
+            return ;
+          }
+          //从右往左
+          if((that.draw.endX - that.draw.startX) < 0){
+            for(var i=0;i<that.json_data.length;i++){
+              that.json_data[i].draw_distance = 0;
+            }
+            that.json_data[id].draw_distance = that.draw.maxRight;
+          }else{//从左往右
+            that.json_data[id].draw_distance = 0;
+          }
+        }
+        that.$apply();
+      },
+      drawEnd:(e)=>{
+//        console.log("拖动结束");
+        var that = this;
+        that.draw.draw = false;
+        that.$apply();
+      },
+      remove:(e)=>{
+        console.log("删除");
+
+      }
     };
 
     //事件处理
@@ -91,6 +152,16 @@
       that.initData();
     }
 
+    filterData = (arr)=>{
+      if(!arr){
+          return [];
+      }
+      for(var i=0;i<arr.length;i++){
+        arr[i].draw_distance = 0;
+      }
+      return arr;
+    }
+
     initData = () => {
       let that = this;
       wepy.request({
@@ -106,7 +177,7 @@
           //            }
           console.log('初始化数据',json);
           if (json.code == 0) {
-            that.json_data = json.data;
+            that.json_data = that.filterData(json.data);
             that.$apply();
           } else if(json.code == -10001) {
             wx.showModal({
@@ -144,15 +215,28 @@
 <style lang="scss">
   @import '../css/common.scss';
 
+  @charset "utf-8";
+
   .list {
     margin-top:20rpx;
     .item{
+      position: relative;
+      width:710rpx;
+      overflow: hidden;
       background: #fff;
       border-radius: 10rpx;
       margin:0 20rpx 20rpx;
-      display: flex;
+      /*display: flex;*/
+
+      .draw{
+        width:710rpx;
+      }
+
       .left{
-        flex:5;
+        /*flex:5;*/
+        list-style: none;
+        display: inline-block;
+        width:568rpx;
         padding-top:33rpx;
         padding-left:33rpx;
         .title{
@@ -181,12 +265,15 @@
         }
       }
       .right{
-        flex:1;
+        /*flex:1;*/
+        width:142rpx;
+        list-style: none;
+        display: inline-block;
         text-align: center;
         color: $color_main;
         position: relative;
         padding: 50rpx 0;
-        margin-right:30rpx;
+        padding-right:30rpx;
         font-size: 30rpx;
 
         &:after{
@@ -199,6 +286,26 @@
           top:0;
           left:0;
           bottom:0;
+          margin:auto 0;
+        }
+      }
+      .del{
+        position: absolute;
+        top: 0;
+        width:100rpx;
+        height: 100%;
+        background-color: red;
+        color: #fff;
+        right:-100rpx;
+
+        view{
+          content: '';
+          position: absolute;
+          top:0;
+          bottom:0;
+          height:50rpx;
+          width:100%;
+          text-align: center;
           margin:auto 0;
         }
       }
