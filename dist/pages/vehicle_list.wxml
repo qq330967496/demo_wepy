@@ -26,6 +26,7 @@
         </view>
       </view>
     </view>
+    <view class="block"/>
 
     <view class="bottom">
       <view class="btn" bindtap="addCar">

@@ -1,0 +1,121 @@
+<style lang="scss">
+  @import 'css/common.scss';
+
+  page {
+    background-color: #efefef;
+    font-family: 'Microsoft YaHei';
+    font-size:35rpx;
+    height:100%;
+    line-height: 120%;
+  }
+  .header{
+    z-index: 101;
+  }
+  swiper{
+
+  }
+  view.swiper-item{
+    display: block;
+  }
+  image{
+    box-sizing: border-box;
+    width:100%;
+  }
+  view{
+    box-sizing: border-box;
+    vertical-align: top;
+    overflow: visible;
+  }
+  text{
+    box-sizing: border-box;
+  }
+  input,wx-input{
+    display:inline-block;
+    min-height:0;
+    /*height: 40rpx;*/
+    font-size: 35rpx;
+    width:100%;
+    box-sizing: border-box;
+
+    font-family: 'Microsoft YaHei';
+    font-size:35rpx;
+  }
+  .input-placeholder-class{
+    font-family: 'Microsoft YaHei';
+    font-size:35rpx;
+    color: #cbcbcb;
+  }
+
+  /*自定义全局*/
+  .mod{
+    background-color: #fff;
+    margin-top: 25rpx;
+  }
+  /*容器*/
+  .container {
+    /*position: absolute;*/
+    top:0;
+    left:0;
+    width:100%;
+    min-height:100%;
+
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    /*justify-content: space-between;*/
+    box-sizing: border-box;
+  }
+  .btn{
+    width:100%;
+    color:#fff;
+    background: $color_main;
+    text-align: center;
+    border-radius: 10rpx;
+    padding:25rpx 0;
+  }
+  .block{
+    height:130rpx;
+  }
+</style>
+
+
+<script>
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+
+  export default class extends wepy.app {
+    config = {
+      pages: [
+//        'pages/vehicle_list',//调试用
+
+        'pages/login',//登录
+        'pages/vehicle_list',//车辆列表
+        'pages/peccancy_list',//违章列表
+        'pages/index',//添加车辆
+        'pages/demo',//模板
+      ],
+      window: {
+        backgroundColor: '#ebebeb',
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#09b6f2',
+        navigationBarTitleText: '暗黑ETC车宝',
+        navigationBarTextStyle: 'light'
+      },
+//      debug:true
+    }
+
+    globalData = {
+      img_mode: 'widthFix',
+      env:'-dev',//环境
+    }
+
+    constructor() {
+      super()
+      this.use('requestfix')
+    }
+
+    onLaunch() {
+
+    }
+  }
+</script>
