@@ -6,7 +6,7 @@
       <view class="bottom"/>
     </view>
     <view class="list">
-      <view class="item"  wx:for="{{json_data.peccancyinfo}}" wx:key="unique">
+      <view class="item"  wx:for="{{json_data.peccancyinfo}}" wx:key="unique" data-decisionnumber="{{item.decisionnumber}}" bindtap="toDetails">
         <view class="title">
           <view class="status {{item.payable==0?'red':''}} {{item.payable==3?'gray':''}} {{item.payable==4?'green':''}}">
             {{item.payable_cn}}

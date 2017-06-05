@@ -40,6 +40,9 @@
     font-family: 'Microsoft YaHei';
     font-size:35rpx;
   }
+  map{
+    width:100%;
+  }
   .input-placeholder-class{
     font-family: 'Microsoft YaHei';
     font-size:35rpx;
@@ -86,11 +89,12 @@
   export default class extends wepy.app {
     config = {
       pages: [
-//        'pages/vehicle_list',//调试用
+//        'pages/peccancy_detail',//调试用
 
         'pages/login',//登录
         'pages/vehicle_list',//车辆列表
         'pages/peccancy_list',//违章列表
+        'pages/peccancy_detail',//违章详情
         'pages/index',//添加车辆
         'pages/demo',//模板
       ],

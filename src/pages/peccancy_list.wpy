@@ -6,7 +6,7 @@
       <view class="bottom"></view>
     </view>
     <view class="list">
-      <view class="item" wx:for="{{json_data.peccancyinfo}}" wx:key="unique">
+      <view class="item" wx:for="{{json_data.peccancyinfo}}" wx:key="unique" data-decisionnumber="{{item.decisionnumber}}" @tap="toDetails">
         <view class="title">
           <view class="status {{item.payable==0?'red':''}} {{item.payable==3?'gray':''}} {{item.payable==4?'green':''}}">
             {{item.payable_cn}}
@@ -40,7 +40,7 @@
   var utils;
 
 
-  export default class Vehicle_list extends wepy.page {
+  export default class Peccancy_list extends wepy.page {
 
     config = {
       enablePullDownRefresh:true,
@@ -58,8 +58,12 @@
 
     //绑定的方法
     methods = {
-      toDetails: (id) => {
-        console.log(id);
+      toDetails: (e) => {
+        console.log('查看详情');
+        var that = this;
+        var plate_num = that.plate_num;
+        var decisionnumber = e.currentTarget.dataset.decisionnumber;
+        that.$navigate('/pages/peccancy_detail?plate_num='+plate_num+'&decisionnumber='+decisionnumber);
       }
     }
 
