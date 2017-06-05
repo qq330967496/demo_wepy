@@ -42,7 +42,9 @@
 
   export default class Vehicle_list extends wepy.page {
 
-    config = {}
+    config = {
+      enablePullDownRefresh:true,
+    }
     components = {}
 
     data = {
@@ -80,6 +82,12 @@
       that.initData();
     }
 
+    onPullDownRefresh(){
+      console.log("下拉");
+      let that = this;
+      that.initData();
+    }
+
     dataFilter = (json)=>{
 //      let statusArr = ["不可办理","需补充驾照后办理","可办理","已办理","办理中"];
       let statusArr = ["不可办理","可办理","可办理","已办理","办理中"];
@@ -105,6 +113,7 @@
         },
         complete:()=>{
           wx.hideLoading();
+          wx.stopPullDownRefresh();
         },
         success: (req) => {
           let json = req.data;

@@ -28,6 +28,7 @@
         </view>
       </view>
     </view>
+    <view class="block"></view>
 
     <view class="bottom">
       <view class="btn" @tap="addCar">
@@ -116,13 +117,13 @@
             return ;
           }
           //从右往左
-          if((that.draw.endX - that.draw.startX) < 0){
+          if((that.draw.endX - that.draw.startX) < -50){
             //所有拖拽距离还原为0
             for(var i=0;i<that.json_data.length;i++){
               that.json_data[i].draw_distance = 0;
             }
             that.json_data[id].draw_distance = that.draw.maxDistance;
-          }else{//从左往右
+          }else if((that.draw.endX - that.draw.startX) > 50){//从左往右
             that.json_data[id].draw_distance = 0;
           }
         }

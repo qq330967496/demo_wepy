@@ -73,6 +73,9 @@
     border-radius: 10rpx;
     padding:25rpx 0;
   }
+  .block{
+    height:130rpx;
+  }
 </style>
 
 
