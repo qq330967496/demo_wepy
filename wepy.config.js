@@ -1,29 +1,47 @@
+const path = require('path');
 var prod = process.env.NODE_ENV === 'production'
 
 module.exports = {
   wpyExt: '.wpy',
-  // eslint: true,
-  compilers: {
-    /*less: {
-      compress: true
-    },*/
-    sass: {
-      outputStyle: 'compressed'
+  build: {
+    web: {
+      htmlTemplate: path.join('src', 'index.template.html'),
+      htmlOutput: path.join('web', 'index.html'),
+      jsOutput: path.join('web', 'index.js')
+    }
+  },
+  resolve: {
+    alias: {
+      counter: path.join(__dirname, 'src/components/counter'),
+      '@': path.join(__dirname, 'src')
     },
+    modules: ['node_modules']
+  },
+  eslint: true,
+  compilers: {
+    less: {
+      compress: true
+    },
+    /*sass: {
+      outputStyle: 'compressed'
+    },*/
     babel: {
       sourceMap: true,
       presets: [
-        'es2015',
-        'stage-1'
+        'env'
       ],
       plugins: [
+        'transform-class-properties',
         'transform-decorators-legacy',
+        'transform-object-rest-spread',
         'transform-export-extensions',
-        'syntax-export-extensions'
       ]
     }
   },
   plugins: {
+  },
+  appConfig: {
+    noPromiseAPI: ['createSelectorQuery']
   }
 }
 
