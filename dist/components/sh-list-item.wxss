@@ -1,0 +1,1 @@
+.sh-list-item{display:flex}.sh-list-item>view{flex:1}

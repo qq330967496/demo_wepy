@@ -1,0 +1,44 @@
+<style lang="less">
+
+</style>
+<template>
+  <list>
+    <listItem wx-for="item in 3">
+      1
+    </listItem>
+  </list>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Toast from 'wepy-com-toast'
+  import List from '@/components/sh-list'
+  import ListItem from '@/components/sh-list-item'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: 'sh-ui',
+    }
+    components = {
+      toast: Toast,
+      list: List,
+      listItem: ListItem,
+    }
+
+    data = {
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+    }
+
+    events = {
+    }
+
+    onLoad() {
+    }
+  }
+</script>

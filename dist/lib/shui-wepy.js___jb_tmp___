@@ -1,0 +1,6 @@
+/*
+* 水sh-ui - wepy
+*/
+
+import List      from '../components/sh-list';
+import List_item from '../components/sh-list-item';
