@@ -1,0 +1,36 @@
+<style lang="less">
+  .sh-list-item{
+    display: flex;
+    &>view{
+      flex:1;
+
+    }
+  }
+</style>
+<template>
+  <view class="sh-list-item">
+    <slot></slot>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class ListItem extends wepy.component {
+
+    props = {
+
+    }
+    data = {
+
+    }
+
+    events = {
+    }
+
+    methods = {
+    }
+
+    onLoad () {
+    }
+  }
+</script>

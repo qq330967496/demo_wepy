@@ -9,8 +9,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.7.2",
-	"appid": "touristappid",
-	"projectname": "wepy%E6%A8%A1%E6%9D%BF",
+	"appid": "wxa4d93d16f7b7df25",
+	"projectname": "wepy",
 	"condition": {
 		"search": {
 			"current": -1,

@@ -1,0 +1,32 @@
+<style lang="less">
+  .sh-list{
+
+  }
+</style>
+<template>
+  <view class="sh-list">
+      <slot></slot>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class List extends wepy.component {
+
+    props = {
+
+    }
+    data = {
+
+    }
+
+    events = {
+    }
+
+    methods = {
+    }
+
+    onLoad () {
+    }
+  }
+</script>
